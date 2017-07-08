@@ -60,7 +60,7 @@ def main():
     args = parser.parse_args()
 
     # create Light CNN for face recognition
-    model = LightCNN(pretrained=False, num_classes=num_classes)
+    model = LightCNN(pretrained=False, num_classes=args.num_classes)
     if args.cuda:
         model = torch.nn.DataParallel(model).cuda()
 
@@ -248,10 +248,12 @@ class AverageMeter(object):
 
 
 def adjust_learning_rate(optimizer, epoch):
-    lr = args.lr * (0.421696503428582 ** (epoch // 5))
+    scale = 0.457305051927326
+    step  = 5
+    lr = args.lr * (scale ** (epoch // step))
     print('lr: {}'.format(lr))
     for param_group in optimizer.param_groups:
-        param_group['lr'] = lr
+        param_group['lr'] = param_group['lr'] * (scale ** (epoch // step))
 
 
 def accuracy(output, target, topk=(1,)):
