@@ -56,8 +56,11 @@ class network(nn.Module):
         x = x.view(x.size(0), -1)
         x = self.fc1(x)
         x = F.dropout(x, training=self.training)
-        out = self.fc2(x)
-        return out, x
+        if self.training:
+            out = self.fc2(x)
+        else:
+            out = x
+        return out
 
     def __initialize_weights(self):
         for m in self.modules():

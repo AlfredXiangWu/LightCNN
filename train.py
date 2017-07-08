@@ -166,8 +166,8 @@ def train(train_loader, model, criterion, optimizer, epoch):
         target_var = torch.autograd.Variable(target)
 
         # compute output
-        output, _ = model(input_var)
-        loss      = criterion(output, target_var)
+        output = model(input_var)
+        loss   = criterion(output, target_var)
 
         # measure accuracy and record loss
         prec1, prec5 = accuracy(output.data, target, topk=(1,5))
@@ -211,8 +211,8 @@ def validate(val_loader, model, criterion):
         target_var = torch.autograd.Variable(target, volatile=True)
 
         # compute output
-        output, _ = model(input_var)
-        loss      = criterion(output, target_var)
+        output = model(input_var)
+        loss   = criterion(output, target_var)
 
         # measure accuracy and record loss
         prec1, prec5 = accuracy(output.data, target, topk=(1,5))

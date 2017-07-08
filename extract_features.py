@@ -72,9 +72,9 @@ def main():
         start = time.time()
         if args.cuda:
             input = input.cuda()
-        input_var   = torch.autograd.Variable(input, volatile=True)
-        _, features = model(input_var)
-        end         = time.time() - start
+        input_var = torch.autograd.Variable(input, volatile=True)
+        features  = model(input_var)
+        end       = time.time() - start
         print("{}({}/{}). Time: {}".format(os.path.join(args.root_path, img_name), count, len(img_list), end))
         save_feature(args.save_path, img_name, features.data.cpu().numpy()[0])
 
