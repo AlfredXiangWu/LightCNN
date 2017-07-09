@@ -252,8 +252,10 @@ def adjust_learning_rate(optimizer, epoch):
     step  = 5
     lr = args.lr * (scale ** (epoch // step))
     print('lr: {}'.format(lr))
-    for param_group in optimizer.param_groups:
-        param_group['lr'] = param_group['lr'] * (scale ** (epoch // step))
+    if (epoch != 0) & (epoch % step == 0):
+        print('Change lr')
+        for param_group in optimizer.param_groups:
+            param_group['lr'] = param_group['lr'] * scale
 
 
 def accuracy(output, target, topk=(1,)):
