@@ -38,8 +38,8 @@ parser.add_argument('--img_list', default='', type=str, metavar='PATH',
                     help='list of face images for feature extraction (default: none).')
 parser.add_argument('--save_path', default='', type=str, metavar='PATH', 
                     help='save root path for features of face images.')
-parser.add_argument('--num_classes', default=99891, type=int,
-                    metavar='N', help='mini-batch size (default: 99891)')
+parser.add_argument('--num_classes', default=79077, type=int,
+                    metavar='N', help='mini-batch size (default: 79077)')
 
 def main():
     global args
@@ -72,9 +72,9 @@ def main():
         start = time.time()
         if args.cuda:
             input = input.cuda()
-        input_var = torch.autograd.Variable(input, volatile=True)
-        features  = model(input_var)
-        end       = time.time() - start
+        input_var   = torch.autograd.Variable(input, volatile=True)
+        _, features = model(input_var)
+        end         = time.time() - start
         print("{}({}/{}). Time: {}".format(os.path.join(args.root_path, img_name), count, len(img_list), end))
         save_feature(args.save_path, img_name, features.data.cpu().numpy()[0])
 
