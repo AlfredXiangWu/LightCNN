@@ -34,9 +34,22 @@ class group(nn.Module):
         x = self.conv(x)
         return x
 
-class network(nn.Module):
-    def __init__(self, num_classes=99891):
-        super(network, self).__init__()
+class resblock(nn.Module):
+    def __init__(self, in_channels, out_channels):
+        super(resblock, self).__init__()
+        self.conv1 = mfm(in_channels, out_channels, kernel_size=3, stride=1, padding=1)
+        self.conv2 = mfm(in_channels, out_channels, kernel_size=3, stride=1, padding=1)
+
+    def forward(self, x):
+        res = x
+        out = self.conv1(x)
+        out = self.conv2(out)
+        out = out + res
+        return out
+
+class network_9layers(nn.Module):
+    def __init__(self, num_classes=79077):
+        super(network_9layers, self).__init__()
         self.features = nn.Sequential(
             mfm(1, 48, 5, 1, 2), 
             nn.MaxPool2d(kernel_size=2, stride=2, ceil_mode=True), 
@@ -59,19 +72,60 @@ class network(nn.Module):
         out = self.fc2(x)
         return out, x
 
-    def __initialize_weights(self):
-        for m in self.modules():
-            if isinstance(m, nn.Conv2d):
-                n = m.kernel_size[0] * m.kernel_size[1] * m.out_channels
-                m.weight.data.normal_(0, math.sqrt(2./n))
-                if m.bias is not None:
-                    m.bias.data.zero_()
-            if isinstance(m, nn.Linear):
-                n = (m.in_features + m.out_features) / 2 
-                m.weight.data.normal_(0, math.sqrt(2./n))
-                m.bias.data.zero_()
+class network_29layers(nn.Module):
+    def __init__(self, block, layers, num_classes=79077):
+        super(network_29layers, self).__init__()
+        self.conv1  = mfm(1, 48, 5, 1, 2)
+        self.pool1  = nn.MaxPool2d(kernel_size=2, stride=2, ceil_mode=True)
+        self.block1 = self._make_layer(block, layers[0], 48, 48)
+        self.group1 = group(48, 96, 3, 1, 1)
+        self.pool2  = nn.MaxPool2d(kernel_size=2, stride=2, ceil_mode=True)
+        self.block2 = self._make_layer(block, layers[1], 96, 96)
+        self.group2 = group(96, 192, 3, 1, 1)
+        self.pool3  = nn.MaxPool2d(kernel_size=2, stride=2, ceil_mode=True)
+        self.block3 = self._make_layer(block, layers[2], 192, 192)
+        self.group3 = group(192, 128, 3, 1, 1)
+        self.block4 = self._make_layer(block, layers[3], 128, 128)
+        self.group4 = group(128, 128, 3, 1, 1)
+        self.pool4  = nn.MaxPool2d(kernel_size=2, stride=2, ceil_mode=True)
+        self.fc     = mfm(8*8*128, 256, type=0)
+        self.fc2    = nn.Linear(256, num_classes)
+            
+    def _make_layer(self, block, num_blocks, in_channels, out_channels):
+        layers = []
+        for i in range(0, num_blocks):
+            layers.append(block(in_channels, out_channels))
+        return nn.Sequential(*layers)
+
+    def forward(self, x):
+        x = self.conv1(x)
+        x = self.pool1(x)
+
+        x = self.block1(x)
+        x = self.group1(x)
+        x = self.pool2(x)
+
+        x = self.block2(x)
+        x = self.group2(x)
+        x = self.pool3(x)
+
+        x = self.block3(x)
+        x = self.group3(x)
+        x = self.block4(x)
+        x = self.group4(x)
+        x = self.pool4(x)
+
+        x = x.view(x.size(0), -1)
+        fc = self.fc(x)
+        fc = F.dropout(fc, training=self.training)
+        out = self.fc2(fc)
+        return out, fc
 
 
-def LightCNN(pretrained=False, **kwargs):
-    model = network(**kwargs)
+def LightCNN_9Layers(**kwargs):
+    model = network_9layers(**kwargs)
+    return model
+
+def LightCNN_29Layers( **kwargs):
+    model = network_29layers(resblock, [1, 2, 3, 4], **kwargs)
     return model

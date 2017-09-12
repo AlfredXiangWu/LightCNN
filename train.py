@@ -20,7 +20,7 @@ import torchvision.datasets as datasets
 
 import numpy as np
 
-from light_cnn import LightCNN
+from light_cnn import LightCNN_9Layers, LightCNN_29Layers
 from load_imglist import ImageList
 
 parser = argparse.ArgumentParser(description='PyTorch Light CNN Training')
@@ -28,7 +28,7 @@ parser.add_argument('--arch', '-a', metavar='ARCH', default='LightCNN')
 parser.add_argument('--cuda', '-c', default=True)
 parser.add_argument('-j', '--workers', default=4, type=int, metavar='N',
                     help='number of data loading workers (default: 16)')
-parser.add_argument('--epochs', default=40, type=int, metavar='N',
+parser.add_argument('--epochs', default=80, type=int, metavar='N',
                     help='number of total epochs to run')
 parser.add_argument('--start-epoch', default=0, type=int, metavar='N',
                     help='manual epoch number (useful on restarts)')
@@ -42,6 +42,8 @@ parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float,
                     metavar='W', help='weight decay (default: 1e-4)')
 parser.add_argument('--print-freq', '-p', default=100, type=int,
                     metavar='N', help='print frequency (default: 100)')
+parser.add_argument('--model', default='', type=str, metavar='Model',
+                    help='model type: LightCNN-9, LightCNN-29')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('--root_path', default='', type=str, metavar='PATH',
@@ -60,7 +62,13 @@ def main():
     args = parser.parse_args()
 
     # create Light CNN for face recognition
-    model = LightCNN(pretrained=False, num_classes=args.num_classes)
+    if args.model == 'LightCNN-9':
+        model = LightCNN_9Layers(num_classes=args.num_classes)
+    elif args.model == 'LightCNN-29':
+        model = LightCNN_29Layers(num_classes=args.num_classes)
+    else:
+        print('Error model type\n')
+
     if args.cuda:
         model = torch.nn.DataParallel(model).cuda()
 
@@ -91,7 +99,6 @@ def main():
             checkpoint = torch.load(args.resume)
             args.start_epoch = checkpoint['epoch']
             model.load_state_dict(checkpoint['state_dict'])
-            optimizer.load_state_dict(checkpoint['optimizer'])
             print("=> loaded checkpoint '{}' (epoch {})"
                   .format(args.resume, checkpoint['epoch']))
         else:
@@ -143,7 +150,6 @@ def main():
             'arch': args.arch,
             'state_dict': model.state_dict(),
             'prec1': prec1,
-            'optimizer' : optimizer.state_dict(),
         }, save_name)
 
 
@@ -249,7 +255,7 @@ class AverageMeter(object):
 
 def adjust_learning_rate(optimizer, epoch):
     scale = 0.457305051927326
-    step  = 5
+    step  = 10
     lr = args.lr * (scale ** (epoch // step))
     print('lr: {}'.format(lr))
     if (epoch != 0) & (epoch % step == 0):

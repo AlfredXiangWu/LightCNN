@@ -2,6 +2,7 @@
 A [pytorch](http://pytorch.org/) implementation of [A Light CNN for Deep Face Representation with Noisy Labels](https://arxiv.org/abs/1511.02683) from the paper by Xiang Wu, Ran He, Zhenan Sun and Tieniu Tan.  The official and original Caffe code can be found [here](https://github.com/AlfredXiangWu/face_verification_experiment).  
 
 ### Table of Contents
+- <a href='#updates'>Updates</a>
 - <a href='#installation'>Installation</a>
 - <a href='#datasets'>Datasets</a>
 - <a href='#training'>Training</a>
@@ -9,6 +10,16 @@ A [pytorch](http://pytorch.org/) implementation of [A Light CNN for Deep Face Re
 - <a href='#performance'>Performance</a>
 - <a href='#citation'>Citation</a>
 - <a href='#references'>References</a>
+
+## Updates
+- Sep 12, 2017
+	- Light CNN-29 model and training code are released. The `100% - EER` on LFW achieves 99.40%.
+	- The performance of set 1 on MegaFace achieves 72.704% for rank-1 accuracy and 85.891% for TPR@FAR=10^-6. 
+- Jul 12, 2017 
+	- Light CNN-9 model and training code are released. The `100% - EER` on LFW obtains 98.70%.  
+	- The performance of set 1 on MegaFace achieves 65.782% for rank-1 accuracy and 76.288% for TPR@FAR=10^-6. 
+- Jul 4, 2017
+	- The repository was built.
 
 ## Installation
 - Install [pytorch](http://pytorch.org/) following the website.
@@ -34,7 +45,7 @@ python train.py --root_path=/path/to/your/datasets/ \
 		--train_list=/path/to/your/train/list.txt \
 		--val_list=/path/to/your/val/list.txt \
 		--save_path=/path/to/your/save/path/ \
-		--num_classes=n
+		--model="LightCNN-9/LightCNN-29" --num_classes=n
 ```
 	
 - Tips:
@@ -53,34 +64,35 @@ python extract_features.py --resume=/path/to/your/model \
 			   --root_path=/path/to/your/datasets/ \
 			   --img_list=/path/to/your/list.txt \
 			   --save_path=/path/to/your/save/path/ \
-			   --num_classes=n
+			   --model="LightCNN-9/LightCNN-29" --num_classes=n
 ```
 - You can use ```vlfeat``` or ```sklearn``` to evaluate the features on ROC and obtain ```EER``` and ```TPR@FPR``` for your testing datasets. 
-- The model is released on [Google Drive](https://drive.google.com/open?id=0ByNaVHFekDPRWk5XUFRvTTRIVmc).
+- The model of LightCNN-9 is released on [Google Drive](https://drive.google.com/open?id=0ByNaVHFekDPRWk5XUFRvTTRIVmc).
 	- Note that the released model contains the whole state of the light CNN module and optimizer. The details of loading model can be found in ```train.py```. 
-- The features of [lfw](https://drive.google.com/open?id=0ByNaVHFekDPRbDV4cEtWSVl3d0k) and [megaface](https://drive.google.com/open?id=0ByNaVHFekDPRZXhQejRwOUtDYm8) are released. 
+- The model of LightCNN-29 is released on [Google Drive](https://drive.google.com/file/d/0ByNaVHFekDPRMGlLWVBhbkVGVm8/view).
+- The features of [lfw](https://drive.google.com/open?id=0ByNaVHFekDPRbDV4cEtWSVl3d0k) and [megaface](https://drive.google.com/open?id=0ByNaVHFekDPRZXhQejRwOUtDYm8) of LightCNN-9 are released. 
 
 ## Performance
 The Light CNN performance on lfw 6,000 pairs.   
 
 |   Model | 100% - EER | TPR@FAR=1%   | TPR@FAR=0.1%| TPR@FAR=0| 
 | :------- | :----: | :---: | :---: |:---: | 
-| caffe(original) | 98.80% |    98.60%    |    96.77%  |    94.97%  | 
-| pytorch | 98.70% | 98.47% | 95.13% | 89.53% |
+| LightCNN-9| 98.70% | 98.47% | 95.13% | 89.53% |
+| LightCNN-29 | 99.40% |    99.43%    |    98.67%  |    95.70%  | 
 
 The Light CNN performance on [lfw BLUFR protocols](http://www.cbsr.ia.ac.cn/users/scliao/projects/blufr/)
 
 |   Model | VR@FAR=0.1% | DIR@FAR=1%| 
-| :------- | :----: | :---: |
-| caffe(original) | 97.45% |    84.89%    |    
-| pytorch | 96.80% | 83.06% | 
+| :------- | :----: | :---: |  
+| LightCNN-9| 96.80% | 83.06% | 
+| LightCNN-29 | 98.95% |    91.33%    |  
 
 The Light CNN performance on MegaFace
 
 |   Model | Rank-1 | TPR@FAR=1e-6| 
-| :------- | :----: | :---: |
-| caffe(original) | 65.532% |    75.854%    |    
-| pytorch | 65.782% | 76.288% | 
+| :------- | :----: | :---: |  
+| LightCNN-9| 65.782% | 76.288% | 
+| LightCNN-29 | 72.704% |  85.891%    |  
 
 ## Citation
 If you use our models, please cite the following paper:

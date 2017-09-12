@@ -21,10 +21,9 @@ import torchvision.transforms as transforms
 import torchvision.datasets as datasets
 
 import numpy as np
-from PIL import Image
 import cv2
 
-from light_cnn import LightCNN
+from light_cnn import LightCNN_9Layers, LightCNN_29Layers
 from load_imglist import ImageList
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Feature Extracting')
@@ -32,6 +31,8 @@ parser.add_argument('--arch', '-a', metavar='ARCH', default='LightCNN')
 parser.add_argument('--cuda', '-c', default=True)
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
+parser.add_argument('--model', default='', type=str, metavar='Model',
+                    help='model type: LightCNN-9, LightCNN-29')
 parser.add_argument('--root_path', default='', type=str, metavar='PATH', 
                     help='root path of face images (default: none).')
 parser.add_argument('--img_list', default='', type=str, metavar='PATH', 
@@ -45,7 +46,13 @@ def main():
     global args
     args = parser.parse_args()
 
-    model = LightCNN(pretrained=True, num_classes=args.num_classes)
+    if args.model == 'LightCNN-9':
+        model = LightCNN_9Layers(num_classes=args.num_classes)
+    elif args.model == 'LightCNN-29':
+        model = LightCNN_29Layers(num_classes=args.num_classes)
+    else:
+        print('Error model type\n')
+
     model.eval()
     if args.cuda:
         model = torch.nn.DataParallel(model).cuda()
