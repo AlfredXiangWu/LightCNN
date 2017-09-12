@@ -13,11 +13,11 @@ A [pytorch](http://pytorch.org/) implementation of [A Light CNN for Deep Face Re
 
 ## Updates
 - Sep 12, 2017
-	- Light CNN-29 model and training code are released. The `100% - EER` on LFW achieves 99.40%.
-	- The performance of set 1 on MegaFace achieves 72.704% for rank-1 accuracy and 85.891% for TPR@FAR=10^-6. 
+	- Light CNN-29 model and training code are released. The `100% - EER` on LFW achieves **99.40%**.
+	- The performance of set 1 on MegaFace achieves **72.704%** for rank-1 accuracy and **85.891%** for TPR@FAR=10^-6. 
 - Jul 12, 2017 
-	- Light CNN-9 model and training code are released. The `100% - EER` on LFW obtains 98.70%.  
-	- The performance of set 1 on MegaFace achieves 65.782% for rank-1 accuracy and 76.288% for TPR@FAR=10^-6. 
+	- Light CNN-9 model and training code are released. The `100% - EER` on LFW obtains **98.70%**.  
+	- The performance of set 1 on MegaFace achieves **65.782%** for rank-1 accuracy and **76.288%** for TPR@FAR=10^-6. 
 - Jul 4, 2017
 	- The repository was built.
 
