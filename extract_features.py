@@ -23,7 +23,7 @@ import torchvision.datasets as datasets
 import numpy as np
 import cv2
 
-from light_cnn import LightCNN_9Layers, LightCNN_29Layers
+from light_cnn import LightCNN_9Layers, LightCNN_29Layers, LightCNN_29Layers_v2
 from load_imglist import ImageList
 
 parser = argparse.ArgumentParser(description='PyTorch ImageNet Feature Extracting')
@@ -50,6 +50,8 @@ def main():
         model = LightCNN_9Layers(num_classes=args.num_classes)
     elif args.model == 'LightCNN-29':
         model = LightCNN_29Layers(num_classes=args.num_classes)
+    elif args.model == 'LightCNN-29v2':
+        model = LightCNN_29Layers_v2(num_classes=args.num_classes)
     else:
         print('Error model type\n')
 
@@ -71,7 +73,7 @@ def main():
     input     = torch.zeros(1, 1, 128, 128)
     for img_name in img_list:
         count = count + 1
-        img   = cv2.imread(os.path.join(args.root_path, img_name), cv2.IMREAD_GRAYSCALE)        
+        img   = cv2.imread(os.path.join(args.root_path, img_name), cv2.IMREAD_GRAYSCALE)
         img   = np.reshape(img, (128, 128, 1))
         img   = transform(img)
         input[0,:,:,:] = img

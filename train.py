@@ -20,7 +20,7 @@ import torchvision.datasets as datasets
 
 import numpy as np
 
-from light_cnn import LightCNN_9Layers, LightCNN_29Layers
+from light_cnn import LightCNN_9Layers, LightCNN_29Layers, LightCNN_29Layers_v2
 from load_imglist import ImageList
 
 parser = argparse.ArgumentParser(description='PyTorch Light CNN Training')
@@ -43,7 +43,7 @@ parser.add_argument('--weight-decay', '--wd', default=1e-4, type=float,
 parser.add_argument('--print-freq', '-p', default=100, type=int,
                     metavar='N', help='print frequency (default: 100)')
 parser.add_argument('--model', default='', type=str, metavar='Model',
-                    help='model type: LightCNN-9, LightCNN-29')
+                    help='model type: LightCNN-9, LightCNN-29, LightCNN-29v2')
 parser.add_argument('--resume', default='', type=str, metavar='PATH',
                     help='path to latest checkpoint (default: none)')
 parser.add_argument('--root_path', default='', type=str, metavar='PATH',
@@ -55,7 +55,7 @@ parser.add_argument('--val_list', default='', type=str, metavar='PATH',
 parser.add_argument('--save_path', default='', type=str, metavar='PATH',
                     help='path to save checkpoint (default: none)')
 parser.add_argument('--num_classes', default=99891, type=int,
-                    metavar='N', help='mini-batch size (default: 99891)')
+                    metavar='N', help='number of classes (default: 99891)')
 
 def main():
     global args
@@ -66,6 +66,8 @@ def main():
         model = LightCNN_9Layers(num_classes=args.num_classes)
     elif args.model == 'LightCNN-29':
         model = LightCNN_29Layers(num_classes=args.num_classes)
+    elif args.model == 'LightCNN-29v2':
+        model = LightCNN_29Layers_v2(num_classes=args.num_classes)
     else:
         print('Error model type\n')
 
@@ -114,7 +116,7 @@ def main():
                 transforms.RandomHorizontalFlip(), 
                 transforms.ToTensor(),
             ])),
-        batch_size=args.batch_size, shuffle=False,
+        batch_size=args.batch_size, shuffle=True,
         num_workers=args.workers, pin_memory=True)
 
     val_loader = torch.utils.data.DataLoader(
