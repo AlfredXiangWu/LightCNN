@@ -135,7 +135,7 @@ class network_29layers_v2(nn.Module):
         self.block4   = self._make_layer(block, layers[3], 128, 128)
         self.group4   = group(128, 128, 3, 1, 1)
         self.fc       = nn.Linear(8*8*128, 256)
-        self.fc2 = nn.Linear(256, num_classes)
+        self.fc2 = nn.Linear(256, num_classes, bias=False)
             
     def _make_layer(self, block, num_blocks, in_channels, out_channels):
         layers = []
