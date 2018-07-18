@@ -106,13 +106,18 @@ The Light CNN performance on MegaFace
 
 ## Citation
 If you use our models, please cite the following paper:
-
-	@article{wulight,
-	  title={A Light CNN for Deep Face Representation with Noisy Labels},
-	  author={Wu, Xiang and He, Ran and Sun, Zhenan and Tan, Tieniu}
-	  journal={arXiv preprint arXiv:1511.02683},
-	  year={2015}
-	}
+```
+@article{wu2018light,
+  title={A light CNN for deep face representation with noisy labels},
+  author={Wu, Xiang and He, Ran and Sun, Zhenan and Tan, Tieniu},
+  journal={IEEE Transactions on Information Forensics and Security},
+  volume={13},
+  number={11},
+  pages={2884--2896},
+  year={2018},
+  publisher={IEEE}
+}
+```
 	
 ## References
 - [Original Light CNN implementation (caffe)](https://github.com/AlfredXiangWu/face_verification_experiment).
