@@ -64,8 +64,8 @@ def main():
             print("=> loading checkpoint '{}'".format(args.resume))
             checkpoint = torch.load(args.resume)
             model.load_state_dict(checkpoint['state_dict'])
-    else:
-        print("=> no checkpoint found at '{}'".format(args.resume))
+        else:
+            print("=> no checkpoint found at '{}'".format(args.resume))
 
     img_list  = read_list(args.img_list)
     transform = transforms.Compose([transforms.ToTensor()])
