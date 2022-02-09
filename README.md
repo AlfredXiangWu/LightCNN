@@ -1,6 +1,6 @@
 
-# Light CNN for Deep Face Recognition, in pytorch
-A [pytorch](http://pytorch.org/) implementation of [A Light CNN for Deep Face Representation with Noisy Labels](https://arxiv.org/abs/1511.02683) from the paper by Xiang Wu, Ran He, Zhenan Sun and Tieniu Tan.  The official and original Caffe code can be found [here](https://github.com/AlfredXiangWu/face_verification_experiment).  
+# Light CNN for Deep Face Recognition, in PyTorch
+A [PyTorch](http://pytorch.org/) implementation of [A Light CNN for Deep Face Representation with Noisy Labels](https://arxiv.org/abs/1511.02683) from the paper by Xiang Wu, Ran He, Zhenan Sun and Tieniu Tan.  The official and original Caffe code can be found [here](https://github.com/AlfredXiangWu/face_verification_experiment).  
 
 ### Table of Contents
 - <a href='#updates'>Updates</a>
@@ -13,6 +13,9 @@ A [pytorch](http://pytorch.org/) implementation of [A Light CNN for Deep Face Re
 - <a href='#references'>References</a>
 
 ## Updates
+
+- Feb 9, 2022
+    - Light CNN v4 pretrained model is released.
 - Jan 17, 2018
 	- Light CNN-29 v2 model and training code are released. The `100% - EER` on LFW achieves **99.43%**.
 	- The performance of set 1 on MegaFace achieves **76.021%** for rank-1 accuracy and **89.740%** for TPR@FAR=10^-6. 
@@ -78,6 +81,10 @@ python extract_features.py --resume=/path/to/your/model \
 - The model of LightCNN-29 is released on [Google Drive](https://drive.google.com/file/d/0ByNaVHFekDPRMGlLWVBhbkVGVm8/view).
 - The model of LightCNN-29 v2 is released on [Google Drive](https://drive.google.com/open?id=1Jn6aXtQ84WY-7J3Tpr2_j6sX0ch9yucS).
 - The features of [lfw](https://drive.google.com/open?id=0ByNaVHFekDPRbDV4cEtWSVl3d0k) and [megaface](https://drive.google.com/open?id=0ByNaVHFekDPRZXhQejRwOUtDYm8) of LightCNN-9 are released. 
+- The model of LightCNN v4 is released on [Google Drive](https://drive.google.com/file/d/1zFB8RmxeS00Nbq2fM0EoME15RIHtVOqn/view?usp=sharing).
+  - The detailed structure of LightCNN v4 is shown in light_cnn_v4.py
+  - The input is an aligned 128*128 **BGR** face image.
+  - The input pixel value is normalized by mean ([0.0, 0.0, 0.0]) and std ([255.0, 255.0, 255.0]).
 
 ## Performance
 The Light CNN performance on lfw 6,000 pairs.   
@@ -87,6 +94,7 @@ The Light CNN performance on lfw 6,000 pairs.
 | LightCNN-9| 98.70% | 98.47% | 95.13% | 89.53% |
 | LightCNN-29 | 99.40% |    99.43%    |    98.67%  |    95.70%  | 
 | LightCNN-29v2 | 99.43% |    99.53%    |    99.30%  |    96.77%  | 
+| LightCNN v4 | 99.67% |    99.67%    |    99.57%  |    99.27%  |
 
 The Light CNN performance on [lfw BLUFR protocols](http://www.cbsr.ia.ac.cn/users/scliao/projects/blufr/)
 
